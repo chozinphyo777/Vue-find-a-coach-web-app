@@ -10,9 +10,17 @@ export default {
                     id : "max",
                     firstName : "MAX",
                     lastName : "ZEL",
-                    areas : ['frontend','backend','server'],
+                    areas : ['frontend','backend','career'],
                     description : "Loream ",
                     hourlyReate : 30,
+                },
+                {
+                    id : "john",
+                    firstName : "John",
+                    lastName : "Sllo",
+                    areas : ['frontend','career'],
+                    description : "Loream ",
+                    hourlyReate : 34,
                 },
             ],
         }
