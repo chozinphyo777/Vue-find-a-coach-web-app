@@ -8,7 +8,11 @@ export default {
             coaches : [
                 {
                     id : "max",
-                    name : "MAX Z",
+                    firstName : "MAX",
+                    lastName : "ZEL",
+                    areas : ['frontend','backend','server'],
+                    description : "Loream ",
+                    hourlyReate : 30,
                 },
             ],
         }
