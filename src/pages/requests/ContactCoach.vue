@@ -9,9 +9,9 @@
             <textarea id="message" cols="30" rows="10" v-model.trim="message"></textarea>
         </div>
         <div class="actions">
-            <base-button>Contact</base-button>
+            <base-button>Send Message</base-button>
         </div>
-        <p v-if="!formIsValid">Please fill the above error!</p>
+        <p v-if="!formIsValid" class="errors">Please enter a valid email and message!</p>
     </form>
 </template>
 <script>
@@ -30,8 +30,56 @@ export default {
                 return;
 
             }
+            this.$store.dispatch('requestsModule/contactCoach', {
+                coachId : this.$route.params.id,
+                email :this.email,
+                message : this.message,
+            })
             this.$router.replace('/coaches');
         }
     }
 }
 </script>
+<style scoped>
+form {
+  margin: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.form-control {
+  margin: 0.5rem 0;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+input,
+textarea {
+  display: block;
+  width: 100%;
+  font: inherit;
+  border: 1px solid #ccc;
+  padding: 0.15rem;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #3d008d;
+  background-color: #faf6ff;
+  outline: none;
+}
+
+.errors {
+  font-weight: bold;
+  color: red;
+}
+
+.actions {
+  text-align: center;
+}
+</style>

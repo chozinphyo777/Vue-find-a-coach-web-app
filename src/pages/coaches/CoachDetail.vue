@@ -1,5 +1,4 @@
 <template>
-    <router-view></router-view>
   <section>
     <base-card>
       <h2>{{ fullName }}</h2>
@@ -9,8 +8,9 @@
   <section>
     <base-card>
       <header>
-        <h2>Interested ? Reach our not!</h2>
-        <base-button link :to="contactLink">Contact a Coach</base-button>
+        <h2>Interested ? Reach out not!</h2>
+        <base-button link :to="contactLink">Contact</base-button>
+        <router-view></router-view>
       </header>
     </base-card>
   </section>
