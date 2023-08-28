@@ -12,7 +12,7 @@ export default {
                     lastName : "ZEL",
                     areas : ['frontend','backend','career'],
                     description : "Loream ",
-                    hourlyReate : 30,
+                    hourlyRate : 30,
                 },
                 {
                     id : "john",
@@ -20,7 +20,7 @@ export default {
                     lastName : "Sllo",
                     areas : ['frontend','career'],
                     description : "Loream ",
-                    hourlyReate : 34,
+                    hourlyRate : 34,
                 },
             ],
         }
