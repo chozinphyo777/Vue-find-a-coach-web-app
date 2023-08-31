@@ -7,8 +7,8 @@
             <base-badge v-for="area in areas" :key="area" :type="area" :title="area"></base-badge>
         </div>
         <div class="actions">
-            <base-button link :to="coachDetailLink" mode="outline">Coach Detail</base-button>
-            <base-button link :to="contactACoachLink">Contact Coach</base-button>
+            <base-button link :to="contactACoachLink" mode="outline">Contact Coach</base-button>
+            <base-button link :to="coachDetailLink">Coach Detail</base-button>
         </div>
     </li>
 </template>

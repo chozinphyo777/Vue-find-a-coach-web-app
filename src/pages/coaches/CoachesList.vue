@@ -1,14 +1,20 @@
 <template>
+    <base-dialog :show="!!error" title= "An error occured!" @close="handleError">
+        <p>{{error}}</p>
+    </base-dialog>
     <section>
         <coach-filter @change-filter="setChangeFilter"></coach-filter>
     </section>
     <section>
         <base-card>
             <div class="controls">
-               <base-button>Refresh</base-button>
-               <base-button link to="/register" mode="outline" v-if="!isCoach">Register as Coach</base-button>
+               <base-button @click="loadCoaches">Refresh</base-button>
+               <base-button link to="/register" mode="outline" v-if="!isLoading && !isCoach">Register as Coach</base-button>
             </div>
-            <ul v-if="hasCoaches">
+            <div v-if="isLoading">
+                <base-spinner></base-spinner>
+            </div>
+            <ul v-else-if="!isLoading && hasCoaches">
                 <coach-item  v-for="coach in filterCoaches"
                     :key="coach.id"
                     :id="coach.id"
@@ -18,7 +24,7 @@
                     :areas="coach.areas">
                 </coach-item>
             </ul>
-            <h3 v-else>Coach No found</h3>
+            <h3 v-else>Coach Not found</h3>
         </base-card>
         
     </section>
@@ -34,7 +40,9 @@ export default {
                     frontend :true,
                     backend :true,
                     career : true,
-                }
+                },
+            isLoading : false,
+            error :null,
         }
     },
     components : {
@@ -62,13 +70,30 @@ export default {
             })
         },
         hasCoaches(){
-            return this.$store.getters['coachesModule/hasCoach'];
+            return !this.isLoading && this.$store.getters['coachesModule/hasCoach'];
         }
+    },
+    created(){
+        this.loadCoaches();
     },
     methods:{
         setChangeFilter(updatedFilters){
             this.activeFilter = updatedFilters;
             console.log(this.activeFilter);
+        },
+        async loadCoaches(){
+            this.isLoading = true;
+            try{
+                await this.$store.dispatch('coachesModule/loadCoaches');
+            }catch(error){
+                this.error = error.message || 'Something went wront!';
+                console.log("error");
+            }
+           
+            this.isLoading = false;
+        },
+        handleError(){
+            this.error = null;
         }
     }
 }
