@@ -27,10 +27,8 @@ export default{
     },
 
     async loadCoaches(context){
-        const response = await fetch(`https://coach-finding-web-app-7a987-default-rtdb.asia-southeast1.firebasedatabase.app/coaches.jsn`);
+        const response = await fetch(`https://coach-finding-web-app-7a987-default-rtdb.asia-southeast1.firebasedatabase.app/coaches.json`);
         const responseData = await response.json(); // get response data
-        console.log(response);
-        console.log(responseData);
         if(!response.ok){
             const error = new Error(responseData.message || 'Failed to fetch!');
             throw error;

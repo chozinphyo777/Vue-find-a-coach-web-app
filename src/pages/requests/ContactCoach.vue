@@ -1,4 +1,7 @@
 <template>
+  <base-dialog :show="!!error" title="An Error Occur!" @close="handleError">
+      <p>{{error}}</p>
+  </base-dialog>
     <form @submit.prevent="submitForm">
         <div class="form-control">
             <label for="email">E-mail</label>
@@ -21,21 +24,31 @@ export default {
             email : '',
             message: '',
             formIsValid : true,
+            error :null,
         }
     },
     methods:{
-        submitForm(){
+       async submitForm(){
             if(this.email === '' || !this.email.includes('@') || this.message === ''){
                 this.formIsValid = false;
                 return;
 
             }
-            this.$store.dispatch('requestsModule/contactCoach', {
+            try{
+             await this.$store.dispatch('requestsModule/contactCoach', {
                 coachId : this.$route.params.id,
                 email :this.email,
                 message : this.message,
             })
-            this.$router.replace('/coaches');
+             this.$router.replace('/coaches');
+            }catch(error){
+              this.error = error.message || 'Something went wrong';
+            }
+            
+            
+        },
+        handleError(){
+          this.error = null;
         }
     }
 }
