@@ -1,19 +1,21 @@
 <template>
-    <base-dialog :show="!!error" title="An Error Occur!" @close="handleError">
-    <p>{{error}}</p>
-    </base-dialog>
-    <base-card>
-        <section>
-            <header>
-                <h3>Requests Received</h3>
-            </header>
-            <base-spinner v-if="isLoading"></base-spinner>
-            <ul v-if="!isLoading && hasRequest">
-                <request-item v-for="request in requests" :email="request.userEmail" :message="request.message" :coachId="request.coachId" :key="request.id"></request-item>
-            </ul>
-            <h3 v-else>You haven't receive any requests yet!</h3>
-        </section>
-    </base-card>
+    <div>
+        <base-dialog :show="!!error" title="An Error Occur!" @close="handleError">
+        <p>{{error}}</p>
+        </base-dialog>
+        <base-card>
+            <section>
+                <header>
+                    <h3>Requests Received</h3>
+                </header>
+                <base-spinner v-if="isLoading"></base-spinner>
+                <ul v-if="!isLoading && hasRequest">
+                    <request-item v-for="request in requests" :email="request.userEmail" :message="request.message" :coachId="request.coachId" :key="request.id"></request-item>
+                </ul>
+                <h3 v-else>You haven't receive any requests yet!</h3>
+            </section>
+        </base-card>
+    </div>
 </template>
 <script>
 import RequestItem from '../../components/requests/RequestItem.vue';

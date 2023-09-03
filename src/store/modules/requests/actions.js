@@ -41,7 +41,6 @@ export default{
         }
        
         context.commit('setAllRequests',requests);
-       
 
     }
 
