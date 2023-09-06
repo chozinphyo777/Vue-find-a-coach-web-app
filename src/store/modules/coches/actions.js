@@ -10,7 +10,7 @@ export default{
             description : payload.description,
             hourlyRate : payload.rate,
         };
-        const response = await fetch(`https://coach-finding-web-app-7a987-default-rtdb.asia-southeast1.firebasedatabase.app/coaches/${userId}.on`,{
+        const response = await fetch(`https://coach-finding-web-app-7a987-default-rtdb.asia-southeast1.firebasedatabase.app/coaches/${userId}.json`,{
             method: 'PUT',
             body: JSON.stringify(newData)
         });
