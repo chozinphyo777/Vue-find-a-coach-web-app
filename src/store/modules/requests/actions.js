@@ -19,26 +19,29 @@ export default{
         context.commit('addRequest',newRequest)
     },
     async loadRequests(context){
+        console.log(context);
         const coachId = context.rootGetters.userId;
-        const response = await fetch('https://coach-finding-web-app-7a987-default-rtdb.asia-southeast1.firebasedatabase.app/requests.json');
+        const token = context.rootGetters.token;
+        const response = await fetch(`https://coach-finding-web-app-7a987-default-rtdb.asia-southeast1.firebasedatabase.app/requests/${coachId}.json?auth=${token}`);
         const responseData = await response.json();
 
         if(!response.ok){
-            const error = new Error(responseData.message || 'Failed to fetch');
+            const error = new Error(responseData.error || 'Failed to fetch!');
+            console.log(responseData.error);
             throw error;
             
          }
-
         const requests = [];
-        for(const key in responseData[coachId]){
+        for(const key in responseData){
             const newRequest = {
                 id : key,
                 coachId : coachId,
-                userEmail : responseData[coachId][key].userEmail,
-                message : responseData[coachId][key].message,
+                userEmail : responseData[key].userEmail,
+                message : responseData[key].message,
             }
            requests.push(newRequest);
         }
+         
        
         context.commit('setAllRequests',requests);
 

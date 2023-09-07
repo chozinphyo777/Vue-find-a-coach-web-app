@@ -2,7 +2,6 @@
   <teleport to="body">
 
     <div v-if="show" @click="tryClose" class="backdrop"></div>
-
     <transition name="dialog">
       <dialog open v-if="show">
         <header>

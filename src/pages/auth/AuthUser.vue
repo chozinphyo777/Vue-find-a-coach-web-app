@@ -1,32 +1,52 @@
 <template>
+  <div>
+    <base-dialog :show="!!error" title="An error occured!" @close="handleError">
+       <p>{{error}}</p>
+    </base-dialog>
+    <base-dialog :show="isLoading" fixed title="Authenticating">
+      <p>Authenticating......</p>
+      <base-spinner></base-spinner>
+    </base-dialog>
     <base-card>
-    <form @submit.prevent="submitForm">
-      <h2>{{submitButtonCaption}} Form</h2>
-        <div class="form-control" :class="{invalid: !email.isValid}">
-            <label for="email">E-mail</label>
-            <input type="text" name="" id="email" v-model.trim="email.val" @blur="clearValidity('email')">
-              <ul v-if="!email.isValid">
-                <li v-for="error in email.errorsMsg" :key="error">
-                 <small>{{error}}</small> 
-                </li>
-              </ul>
-           
+      <form @submit.prevent="submitForm">
+        <h2>{{ submitButtonCaption }} Form</h2>
+        <div class="form-control" :class="{ invalid: !email.isValid }">
+          <label for="email">E-mail</label>
+          <input
+            type="text"
+            name=""
+            id="email"
+            v-model.trim="email.val"
+            @blur="clearValidity('email')"
+          />
+          <ul v-if="!email.isValid">
+            <li v-for="error in email.errorsMsg" :key="error">
+              <small>{{ error }}</small>
+            </li>
+          </ul>
         </div>
-        <div class="form-control" :class="{invalid: !password.isValid}">
-            <label for="password">Password</label>
-            <input type="password" name="" id="password" v-model.trim="password.val" @blur="clearValidity('email')">
-            <ul v-if="!password.isValid">
-                <li v-for="error in password.errorsMsg" :key="error">
-                 <small>{{error}}</small> 
-                </li>
-              </ul>
+        <div class="form-control" :class="{ invalid: !password.isValid }">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            v-model.trim="password.val"
+            autocomplete="on"
+            @blur="clearValidity('email')"
+          />
+          <ul v-if="!password.isValid">
+            <li v-for="error in password.errorsMsg" :key="error">
+              <small>{{ error }}</small>
+            </li>
+          </ul>
         </div>
-         
-        <base-button>{{submitButtonCaption}}</base-button>
-        <base-button type="button" mode="flat" @click="switchAuthMode">{{swithModeButtonCaption}}</base-button>
-         
-    </form>
+        <base-button>{{ submitButtonCaption }}</base-button>
+        <base-button type="button" mode="flat" @click="switchAuthMode">{{
+          swithModeButtonCaption
+        }}</base-button>
+      </form>
     </base-card>
+  </div>
 </template>
 <script>
 export default {
@@ -44,6 +64,8 @@ export default {
       },
       formIsValid : true,
       mode : 'login',
+      error : null,
+      isLoading : false,
     }
   },
   computed:{
@@ -76,23 +98,34 @@ export default {
         this.password.errorsMsg.push("Password must have at last 6")
       }
     },
-    submitForm(){
+    async submitForm(){
       this.email.errorsMsg = [];
       this.password.errorsMsg = [];
       this.checkValidation();
       if(!this.formIsValid){
         return;
       }
-      if(this.mode === 'login'){
-        //
-      }
-      else{
-        console.log("Go to Signup page")
-        this.$store.dispatch('signup',{
+      this.isLoading = true;
+      try{
+        const actionPayload = {
            email : this.email.val,
           password : this.password.val,
-        })
+        }
+        if(this.mode === 'login'){
+          await this.$store.dispatch('login', actionPayload);
+           this.$router.replace('/coaches')
+        }
+      else{
+        await this.$store.dispatch('signup', actionPayload);
+         this.$router.replace('/coaches')
       }
+      }catch(error){
+        this.error = error.message || 'Failed to authenticate, try later!'
+      }
+      this.isLoading = false
+      this.email.val =  '';
+      this.password.val = '';
+
     },
     switchAuthMode(){
       this.email.errorsMsg = [];
@@ -103,6 +136,9 @@ export default {
       else{
         this.mode = 'login';
       }
+    },
+    handleError(){
+      this.error = null
     }
   }
 }
@@ -132,7 +168,7 @@ input {
   padding: 0.15rem;
 }
 
-input:focus{
+input:focus {
   border-color: #3d008d;
   background-color: #faf6ff;
   outline: none;

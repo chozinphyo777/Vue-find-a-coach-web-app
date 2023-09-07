@@ -10,15 +10,28 @@ export default{
             description : payload.description,
             hourlyRate : payload.rate,
         };
-        const response = await fetch(`https://coach-finding-web-app-7a987-default-rtdb.asia-southeast1.firebasedatabase.app/coaches/${userId}.json`,{
+        const token = context.rootGetters.token;
+        console.log(userId);
+        console.log(token);
+        const response = await fetch(`https://coach-finding-web-app-7a987-default-rtdb.asia-southeast1.firebasedatabase.app/coaches/${userId}.json?auth=${token}`,{
             method: 'PUT',
             body: JSON.stringify(newData)
         });
+        // const response = await fetch(
+        //     `https://coach-finding-web-app-7a987-default-rtdb.asia-southeast1.firebasedatabase.app/coaches/${userId}.json?auth=` +
+        //       token,
+        //     {
+        //       method: 'PUT',
+        //       body: JSON.stringify(newData)
+        //     }
+        //   );
 
-        // const responseData = await response.json(); // get response data
+        const responseData = await response.json(); // get response data
 
         if(!response.ok){
-            //error
+            const error = new Error(responseData.error || 'Registration error');
+            console.log(responseData.error);
+            throw error;
         }
         context.commit('addCoach',{
             ...newData,
@@ -35,7 +48,7 @@ export default{
         const response = await fetch(`https://coach-finding-web-app-7a987-default-rtdb.asia-southeast1.firebasedatabase.app/coaches.json`);
         const responseData = await response.json(); // get response data
         if(!response.ok){
-            const error = new Error(responseData.message || 'Failed to fetch!');
+            const error = new Error(responseData.error.message || 'Failed to fetch!');
             throw error;
         }
        

@@ -1,6 +1,5 @@
 <template>
     <li>
-        <h2>{{id}}</h2>
         <h3>{{ fullName }}</h3>
         <h4>${{rate}}/hr</h4>
         <div>
