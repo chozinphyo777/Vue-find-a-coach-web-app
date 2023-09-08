@@ -113,12 +113,12 @@ export default {
         }
         if(this.mode === 'login'){
           await this.$store.dispatch('login', actionPayload);
-           this.$router.replace('/coaches')
         }
       else{
         await this.$store.dispatch('signup', actionPayload);
-         this.$router.replace('/coaches')
       }
+      const redirectUrl = '/'+ (this.$route.query.redirect || 'coaches')
+      this.$router.replace(redirectUrl);
       }catch(error){
         this.error = error.message || 'Failed to authenticate, try later!'
       }
@@ -140,7 +140,7 @@ export default {
     handleError(){
       this.error = null
     }
-  }
+  },
 }
 </script>
 <style scoped>
