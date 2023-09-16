@@ -1,7 +1,7 @@
 <template>
     <header>
         <nav>
-            <h1><router-link to="/">Find a Coach</router-link></h1>
+            <h1><router-link to="/">Find Coaches</router-link></h1>
             <ul>
                 <li><router-link to="/coaches">All Courses</router-link></li>
                 <li v-if="isLoggedIn"><router-link to="/request">Requests</router-link></li>
